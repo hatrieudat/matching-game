@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CDN for VueJS -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <!-- CSS Bootstrap -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Vue Star Rating -->
+    <script src="https://unpkg.com/vue-star-rating/dist/VueStarRating.umd.min.js"></script>
+    <!-- Import Lodash library CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+    <title>Vuejs Example Matching Game</title>
+</head>
+
+<body class="container overflow-visible" style="background-color: #ECECEC;">
+    <div id="app" class="w-100 mt-4 d-flex flex-column" style="height: 600px;">
+        <!-- Header -->
+        <header class="h2 fw-bold mx-auto pb-2 text-primary">Matching Game</header>
+        <div class="d-flex flex-row justify-content-center pb-3">
+            <div class="p-3">
+                <star-rating
+                    :inline="true"
+                    :max-rating="3"
+                    :rating="star"
+                    :read-only="true"
+                    :show-rating="false"
+                    :star-size="25"
+                    :increment="0.5"
+                    active-color="#0d6efd"
+                    style="vertical-align: -webkit-baseline-middle;"
+                >                    
+                </star-rating>
+            </div>
+            <div class="p-3">
+                <span class="btn btn-primary" style="cursor: default;">
+                    Moves &nbsp;  
+                    <span class="badge" :class="gameComplete ? 'bg-primary' : 'bg-light text-dark'">
+                        {{ turns }}
+                    </span>
+                </span>
+            </div>
+            <div class="p-3">
+                <span class="btn btn-primary" style="cursor: default;">
+                    Time &nbsp;
+                    <span class="badge" :class="gameComplete ? 'bg-primary' : 'bg-light text-dark'">
+                        {{ min }} : {{ sec }}
+                    </span>
+                </span>
+            </div>
+            <div class="p-3">
+                <button type="button" class="btn btn-primary" :class="{ disabled: !start }" @click="reset">
+                    <i class="fas fa-undo"></i>
+                </button>
+            </div>
+        </div>
+        <!-- End Header -->
+        <!-- Main Content -->
+        <main class="mx-auto h-100 shadow-lg rounded-3 bg-light" style="width: 46%;">
+            <div class="px-4 d-flex flex-wrap align-content-around justify-content-between h-100">
+                <div v-for="distro of memory_card" class="flip-card shadow bg-success bg-gradient" :class="{ fliped: distro.isFlipped }" @click="flipCard(distro)">
+                    <div class="flip-card-back shadow bg-white" :class="{ matched: distro.isMatched }">
+                        <img class="mx-auto" :src="distro.img" height="96" width="96" draggable="false">
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- End Main -->
+        
+        <!-- Modal Congratuation -->        
+        <modal v-if="gameComplete" @close="reset" :min="min" :sec="sec" :turns="turns" :star="star"></modal>
+        <!-- End Modal -->
+    </div>
+
+    <!-- Import main.css -->
+    <link rel="stylesheet" href="css/main.css">
+    <!-- Import main.js -->
+    <script src="js/main.js"></script>
+</body> 
+</html>
